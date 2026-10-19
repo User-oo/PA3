@@ -53,22 +53,39 @@ def selection_sort(values: list[int]) -> None:
     counts["loop_comparisons"] += 1
     return counts
 
-def bubble_sort(values: list[int]) -> None:
+def bubble_sort(values: list[int]) -> dict[str, int]:
+    counts = {
+                "data_comparisons": 0,
+                "loop_comparisons": 0,
+                "data_assignments": 0,
+                "loop_assignments": 0,
+                "other": 0 
+                }
     end = len(values) - 1
     swapped = True
+    counts["loop_assignments"] += 2
 
     while end > 0 and swapped:
         swapped = False
         j = 0 
+        counts["loop_assignments"] += 2
 
         while j < end:
+            counts["loop_comparisons"] += 1
+            counts["data_comparisons"] +=1
             if values[j] > values[j + 1]:
                 swap(values, j, j + 1)
+                counts["data_assignments"] += 3
                 swapped = True
+                counts["loop_assignments"] += 1
 
             j += 1
+            counts["loop_assignments"] += 1
 
         end -= 1
+        counts["loop_assignments"] += 1
+
+    return counts
 
 def main():
     l = [1,8,5,2,4,9,0]
@@ -77,9 +94,10 @@ def main():
     print(counts)
     print("total operations: ", sum(counts.values()))
 
-    bubble_list = [1,8,5,2,4,9,0]
-    bubble_sort(bubble_list)
-    print("Bubble sort:", bubble_list)
+    bubble_values = [1,8,5,2,4,9,0]
+    bubble_counts = bubble_sort(bubble_values)
+    print("Bubble sort:", bubble_values)
+    print(bubble_counts)
 
 if __name__=="__main__":
     main()
