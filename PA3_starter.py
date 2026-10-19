@@ -29,12 +29,13 @@ def selection_sort(values: list[int]) -> None:
         j = i + 1
         counts["loop_assignments"] += 1
         while j < len(values):
-            counts["loop_assignments"] += 1
+            counts["loop_comparisons"] += 1
             counts["data_comparisons"] += 1
             if values[j] < values[min_index]:
-                # TODO: Update min_index.
                 min_index = j
+                counts["data_assignments"] += 1
             j += 1
+            counts["loop_assignments"] += 1
         counts["loop_comparisons"] += 1
         #keeping track exit while loop
         # TODO:
@@ -47,17 +48,38 @@ def selection_sort(values: list[int]) -> None:
             counts["data_assignments"] += 3
 
         i += 1
+        counts["loop_assignments"] += 1
         print(f"i: {i}, j: {j}, min_index: {min_index}, values: {values}")
     counts["loop_comparisons"] += 1
     return counts
 
+def bubble_sort(values: list[int]) -> None:
+    end = len(values) - 1
+    swapped = True
 
+    while end > 0 and swapped:
+        swapped = False
+        j = 0 
+
+        while j < end:
+            if values[j] > values[j + 1]:
+                swap(values, j, j + 1)
+                swapped = True
+
+            j += 1
+
+        end -= 1
 
 def main():
     l = [1,8,5,2,4,9,0]
     counts = selection_sort(l)
     print(l)
     print(counts)
+    print("total operations: ", sum(counts.values()))
+
+    bubble_list = [1,8,5,2,4,9,0]
+    bubble_sort(bubble_list)
+    print("Bubble sort:", bubble_list)
 
 if __name__=="__main__":
     main()
